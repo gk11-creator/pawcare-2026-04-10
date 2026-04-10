@@ -1,0 +1,73 @@
+.home-container { padding-bottom: 40px; }
+
+.hero {
+  text-align: center;
+  padding: 40px 0 30px;
+}
+.hero-emoji { font-size: 48px; display: block; margin-bottom: 8px; }
+.hero h1 { font-size: 28px; font-weight: 800; color: #d4627a; }
+.hero p { color: #888; margin-top: 8px; font-size: 15px; }
+
+.form-card {
+  background: white;
+  border-radius: 24px;
+  padding: 28px 24px;
+  box-shadow: 0 4px 24px rgba(212, 98, 122, 0.1);
+}
+
+.form-group { margin-bottom: 24px; }
+.form-group label {
+  display: block;
+  font-weight: 700;
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+.form-row { display: flex; gap: 12px; }
+.form-group.half { flex: 1; }
+
+input[type="number"] {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #f0e0e5;
+  border-radius: 12px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+input[type="number"]:focus { border-color: #d4627a; }
+
+.chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 2px solid #f0e0e5;
+  background: white;
+  font-size: 13px;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s;
+}
+.chip:hover { border-color: #d4627a; color: #d4627a; }
+.chip.active {
+  background: #d4627a;
+  border-color: #d4627a;
+  color: white;
+  font-weight: 700;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #d4627a, #e8956d);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: opacity 0.2s;
+}
+.submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
