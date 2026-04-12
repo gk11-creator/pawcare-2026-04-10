@@ -31,7 +31,7 @@ export default function Home({ onResult }) {
     setLoading(true);
     try {
       const res = await axios.post('https://pawcare-2026-04-10.onrender.com/api/recommend', form);
-      onResult(res.data);
+      onResult(res.data, form);
     } catch (err) {
       alert('분석 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.');
     } finally {
