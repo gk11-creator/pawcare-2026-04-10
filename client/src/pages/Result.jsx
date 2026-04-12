@@ -1,6 +1,12 @@
 import './Result.css';
+import { FlaskConical, Scale } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import DogHealthMap from '../components/DogHealthMap';
 
-export default function Result({ data, onBack }) {
+const API = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
+export default function Result({ data, onBack, onReview, breed }) {
   if (!data?.data) return null;
   const { nutritionAnalysis, recommendations, risks, summary } = data.data;
   const equalpetProducts = data.equalpetProducts || [];
@@ -8,6 +14,25 @@ export default function Result({ data, onBack }) {
   const equalpetNote = data.equalpetNote || null;
   const livepetProducts = data.livepetProducts || [];
   const livepetNote = data.livepetNote || null;
+  const [ratings, setRatings] = useState({});
+
+  useEffect(() => {
+    axios.get(`${API}/api/reviews/ratings`)
+      .then(res => setRatings(res.data.data || {}))
+      .catch(() => {});
+  }, []);
+
+  const getRatingBadge = (productName) => {
+    if (!productName) return null;
+    const matchedKey = Object.keys(ratings).find(name =>
+      productName.includes(name.substring(0, 10)) ||
+      name.includes(productName.substring(0, 10))
+    );
+    if (matchedKey && ratings[matchedKey] >= 4) {
+      return <span className="rating-badge">⭐ 사용자 별점 높은 제품</span>;
+    }
+    return null;
+  };
 
   return (
     <div className="result-container">
@@ -20,9 +45,11 @@ export default function Result({ data, onBack }) {
       </div>
 
       <div className="section-card">
-        <h3>📊 영양 분석</h3>
+        <h3><FlaskConical size={18} color="#d4627a" style={{marginRight: '8px', verticalAlign: 'middle'}}/> 영양 분석</h3>
         <p>{nutritionAnalysis}</p>
       </div>
+
+      <DogHealthMap breed={breed} />
 
       <div className="two-col-section">
         <div className="section-card col-card">
@@ -32,6 +59,7 @@ export default function Result({ data, onBack }) {
               <div className="product-rank">#{i + 1}</div>
               <div className="product-info">
                 <h4>{rec.productName}</h4>
+                {getRatingBadge(rec.productName)}
                 <p className="reason">💡 {rec.reason}</p>
                 <p className="effect">✨ {rec.expectedEffect}</p>
                 <div className="product-meta">
@@ -59,6 +87,7 @@ export default function Result({ data, onBack }) {
                 <div className="product-rank">#{i + 1}</div>
                 <div className="product-info">
                   <h4>{product.name}</h4>
+                  {getRatingBadge(product.name)}
                   <p className="reason">💡 {product.description || '견종 맞춤 영양제로 필요한 성분을 균형있게 제공합니다.'}</p>
                   {product.effect && <p className="effect">✨ {product.effect}</p>}
                   <div className="product-meta">
@@ -85,6 +114,7 @@ export default function Result({ data, onBack }) {
                 <div className="product-rank">#{i + 1}</div>
                 <div className="product-info">
                   <h4>{product.name}</h4>
+                  {getRatingBadge(product.name)}
                   {product.summary && <p className="reason">💡 {product.summary}</p>}
                   <div className="product-meta">
                     <span className="price">💰 {product.price}</span>
@@ -104,7 +134,7 @@ export default function Result({ data, onBack }) {
 
       {comparison.length > 0 && (
         <div className="comparison-card">
-          <h3>🔍 추천 제품 비교</h3>
+          <h3><Scale size={18} color="#c17f24" style={{marginRight: '8px', verticalAlign: 'middle'}}/> 추천 제품 비교</h3>
           <ul>
             {comparison.map((point, i) => (
               <li key={i}>
@@ -122,6 +152,9 @@ export default function Result({ data, onBack }) {
             <li key={i}>{risk}</li>
           ))}
         </ul>
+        <button className="review-cta-btn" onClick={onReview}>
+          ✏️ 구매 후기 남기기
+        </button>
       </div>
     </div>
   );
