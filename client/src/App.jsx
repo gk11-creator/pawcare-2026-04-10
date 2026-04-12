@@ -7,16 +7,14 @@ import './App.css';
 function App() {
   const [page, setPage] = useState('home');
   const [resultData, setResultData] = useState(null);
-  const [formData, setFormData] = useState(null);
 
   return (
     <div className="app">
       {page === 'home' && (
-        <Home onResult={(data, form) => {
-          setResultData(data);
-          setFormData(form);
-          setPage('result');
-        }} />
+        <Home
+          onResult={(data) => { setResultData(data); setPage('result'); }}
+          onInsights={() => setPage('insights')}
+        />
       )}
       {page === 'result' && (
         <Result
@@ -28,6 +26,9 @@ function App() {
       )}
       {page === 'review' && (
         <Review onBack={() => setPage('result')} resultData={resultData} />
+      )}
+      {page === 'insights' && (
+        <Insights onBack={() => setPage('home')} />
       )}
     </div>
   );

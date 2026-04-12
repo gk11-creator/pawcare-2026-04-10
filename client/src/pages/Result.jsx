@@ -2,11 +2,11 @@ import './Result.css';
 import { FlaskConical, Scale } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import DogHealthMap from '../components/DogHealthMap';
+
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
-export default function Result({ data, onBack, onReview, breed }) {
+export default function Result({ data, onBack, onReview }) {
   if (!data?.data) return null;
   const { nutritionAnalysis, recommendations, risks, summary } = data.data;
   const equalpetProducts = data.equalpetProducts || [];
@@ -48,8 +48,6 @@ export default function Result({ data, onBack, onReview, breed }) {
         <h3><FlaskConical size={18} color="#d4627a" style={{marginRight: '8px', verticalAlign: 'middle'}}/> 영양 분석</h3>
         <p>{nutritionAnalysis}</p>
       </div>
-
-      <DogHealthMap breed={breed} />
 
       <div className="two-col-section">
         <div className="section-card col-card">
